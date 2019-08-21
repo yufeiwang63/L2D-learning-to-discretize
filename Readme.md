@@ -1,4 +1,4 @@
-This is the source code for the paper [learning to discretize solving 1d scalar conservation laws via deep reinforcement learning](https://arxiv.org/abs/1905.11079)  
+## Source code for the paper [learning to discretize: solving 1d scalar conservation laws via deep reinforcement learning](https://arxiv.org/abs/1905.11079)  
 We will add a lot more comments, and code clean later.  
 For a breif reference usage at the moment:
 

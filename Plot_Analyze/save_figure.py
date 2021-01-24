@@ -30,10 +30,10 @@ args, tb_writter = get_args()
 
 
 ### Important: fix numpy and torch seed! ####
-np.random.seed(args.np_rng_seed)
+np.random.seed(args.seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
-torch.manual_seed(args.torch_rng_seed)
+torch.manual_seed(args.seed)
 
 print('State dimension: {0}'.format(args.state_dim))
 print('Action dimension: {0}'.format(args.action_dim))

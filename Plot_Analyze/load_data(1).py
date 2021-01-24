@@ -71,8 +71,8 @@ def load_data(path):
             else:
                 print(' %.3f (%.3f) & %.3f (%.3f)  '% (RL_mean[rowidx][colidx], RL_std[rowidx][colidx], \
                     coarse_mean[rowidx][colidx], coarse_std[rowidx][colidx]), end = '')
-        print('\\\\ \\hline')
+        print('\\\\ \hline')
     # return dx,dt,RL_mean,RL_std,coarse_mean,coarse_std
 
 
-load_data('../NipsExpResult/rk4_u2.txt')
+load_data('../NipsExpResult/rk4_u4.txt')

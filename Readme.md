@@ -1,13 +1,43 @@
-## Source code for the paper [learning to discretize: solving 1d scalar conservation laws via deep reinforcement learning](https://arxiv.org/abs/1905.11079)  
-We will add a lot more comments, and code clean later.  
-For a breif reference usage at the moment:
 
-### train commands
-python main_burgers.py --flux u2 --mode weno_coef_four --num_process xxx --agent ddpg 
-(should set num_process >= init_util.py line 175 len(train_idxes)).
-(do not set num_process to be too large, or the replay buffer size would be too large and causes MemError. 4 is ok.)
+# Learning to Discretize: Solving 1D Scalar Conservation Laws via Deep Reinforcement Learning
 
-### for test trained models, and plot the evolving animations
-python main_burgers.py --flux u3 --test True --animation 1 --load_path xxx --save_RL_weno_animation xxx --Tscheme euler/rk4
+This is the code for the paper "Learning to Discretize: Solving 1D Scalar Conservation Laws via Deep Reinforcement Learning", published at Communication in Computational Physics (CiCP) 2020. [[Arxiv](https://arxiv.org/abs/1905.11079)]. 
+Authors: Yufei Wang*, Ziju Shen*, Zichao Long, Bin Dong (* indicates equal contribution)
+
+
+## Instructions
+### Preparation
+1. Create conda environment  
+```
+conda env create -f environment.yml
+```  
+
+2. Activate the conda environment  
+```
+source prepare.sh
+```  
+
+### Training
+1. Generate training datasets
+```
+python scripts/generate_solutions.py --prefix [PREFIX] --eta [ETA] --num [NUM]
+```
+to generate and store solutions to some randomly generated initial conditions. 
+The solution files will be stored at `data/local/solutions/prefix`
+
+2. Perform training
+```
+python launchers/launch_td3.py
+```
+This will train a TD3 agent on the pre-generated solutions of different initial conditions in step 1.  
+Remember to change the `solution_data_path` variable to point to the correct path of the generated solutions in step 1.  
+You can tune the parameters in `launch_td3.py`. 
+
+The training logs will be stored at `data/local/exp_prefix`. `exp_prefix` is specified in `launch_td3.py`.  
+To view the training logs, you can use `python viskit/frontend.py data/local/exp_prefix`.  
+To make videos of the trained models, use `scripts/make_videos.py`  
+To make error tables of the trained models, use `scripts/test_trained_model_mseh/forcing/viscous.py`
+
+
 
 

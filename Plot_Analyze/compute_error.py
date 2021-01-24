@@ -26,10 +26,10 @@ args, tb_writter = get_args()
 
 
 ### Important: fix numpy and torch seed! ####
-np.random.seed(args.np_rng_seed)
+np.random.seed(args.seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
-torch.manual_seed(args.torch_rng_seed)
+torch.manual_seed(args.seed)
 
 print('State dimension: {0}'.format(args.state_dim))
 print('Action dimension: {0}'.format(args.action_dim))
@@ -77,14 +77,7 @@ else:
 if args.load_path is not None:
     print('load models!')
     agent.load(args.load_path)
-#if args.test or args.animation or args.compute_tvd:
-#    if args.agent == 'ppo':
-#        ppo_test(agent, test_env, args)
-#        exit()
-#    elif args.agent == 'ddpg':
-#        DDPG_test(agent, test_env, args)
-#        exit()
-#        pass
+
 
 ###### different dx experiement :rk4
 print("generate different dx")

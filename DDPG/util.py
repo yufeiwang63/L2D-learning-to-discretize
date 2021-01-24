@@ -134,6 +134,70 @@ class SlidingMemory_new():
         self.actions.fill(0)
         self.targets.fill(0)
 
+class SlidingMemory_traj():
+    
+    def __init__(self, state_size, action_size, mem_size, horizon):
+        self.mem_size = mem_size
+        self.prev_state_dataset = np.zeros((mem_size, horizon, state_size))
+        self.action_dataset = np.zeros((mem_size, horizon, action_size))
+        self.reward_dataset = np.zeros((mem_size, horizon))
+        self.next_state_dataset = np.zeros((mem_size, horizon, state_size))
+        self.done_dataset = np.zeros((mem_size, horizon))
+        self.pointer = 0
+        self.full = False
+
+    def add(self, prev_states, actions, rewards, next_states, dones):
+        add_num = len(prev_states)
+        if self.pointer + add_num <= self.mem_size:
+            self.prev_state_dataset[self.pointer: self.pointer + add_num] = prev_states.copy()
+            self.action_dataset[self.pointer: self.pointer + add_num] = actions.copy()
+            self.reward_dataset[self.pointer: self.pointer + add_num] = rewards.copy()
+            self.next_state_dataset[self.pointer: self.pointer + add_num] = next_states.copy()
+            self.done_dataset[self.pointer: self.pointer + add_num] = dones.copy()
+            self.pointer = self.pointer + add_num
+        else:
+            self.full = True
+            overflow_num = self.pointer + add_num - self.mem_size
+            left_num = self.mem_size - self.pointer
+
+            self.prev_state_dataset[self.pointer: ] = prev_states[:left_num].copy()
+            self.action_dataset[self.pointer: ] = actions[:left_num].copy()
+            self.reward_dataset[self.pointer: ] = rewards[:left_num].copy()
+            self.next_state_dataset[self.pointer: ] = next_states[:left_num].copy()
+            self.done_dataset[self.pointer: ] = dones[:left_num].copy()
+            
+            self.prev_state_dataset[:overflow_num] = prev_states[left_num:].copy()
+            self.action_dataset[:overflow_num] = actions[left_num:].copy()
+            self.reward_dataset[:overflow_num] = rewards[left_num:].copy()
+            self.next_state_dataset[:overflow_num] = next_states[left_num:].copy()
+            self.done_dataset[:overflow_num] = dones[left_num:].copy()
+
+            self.pointer = overflow_num
+
+    def num(self):
+        return self.pointer
+    
+    def sample(self, batch_size):
+        if self.full:
+            indexes = random.sample(range(self.mem_size), batch_size)
+        else:
+            indexes = random.sample(range(self.pointer), batch_size)
+
+        prev_state_batch = self.prev_state_dataset[indexes]
+        action_batch = self.action_dataset[indexes]
+        reward_batch = self.reward_dataset[indexes]
+        next_state_batch = self.next_state_dataset[indexes]
+        done_batch = self.done_dataset[indexes]
+
+        return prev_state_batch, action_batch, reward_batch, next_state_batch, done_batch
+    
+    def clear(self):
+        self.prev_state_dataset.fill(0)
+        self.action_dataset.fill(0)
+        self.reward_dataset.fill(0)
+        self.reward_dnext_state_datasetataset.fill(0)
+        self.done_dataset.fill(0)
+
 class SlidingMemory_batch():
     def __init__(self, mem_size):
         self.mem = deque()

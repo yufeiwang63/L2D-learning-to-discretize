@@ -36,7 +36,7 @@ You can tune the parameters in `launch_td3.py`.
 The training logs will be stored at `data/local/exp_prefix`. `exp_prefix` is specified in `launch_td3.py`.  
 To view the training logs, you can use `python viskit/frontend.py data/local/exp_prefix`.  
 To make videos of the trained models, use `scripts/make_videos.py`  
-To make error tables of the trained models, use `scripts/test_trained_model_mseh/forcing/viscous.py`
+To make error tables of the trained models, use `scripts/test_trained_model_mesh.py` or   `scripts/test_trained_model_forcing.py` or `scripts/test_trained_model_viscous.py`
 
 
 
